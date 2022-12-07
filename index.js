@@ -1,0 +1,1 @@
+document.getElementsByName("Add").innerHTML="hi, you";
