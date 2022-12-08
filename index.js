@@ -128,6 +128,17 @@ function deleteTod(){
     item = item,filter(item => item.id !==Number(key));
     renderTodo(toDo);
 };
+localStorage.setItem('itemRef', JSON.stringify(item));
+
+document.addEventListener('DOMContentLoaded', () => {
+    const ref = localStorage.getItem('todoItemsRef');
+    if (ref) {
+      todoItems = JSON.parse(ref);
+      todoItems.forEach(t => {
+        renderTodo(t);
+      });
+    }
+  });
 
 
 
