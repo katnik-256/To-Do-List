@@ -28,34 +28,70 @@ form.addEventListener('submit',  event => {
         input.focus();
     }
 
-}
-);
+});
+
 //rendering the todo list
 
-function renderTodo(toDo){
-    //select the first element in the list
+// function renderTodo(toDo){
+//     //select the first element in the list
+//     const list = document.querySelector('.js-todo-list');
+
+// //ternary operator
+// const ischecked = toDo.checked? 'done': '';
+// //creat a `li` ans assign it to node
+// const node = document.createElement('li');
+// //set the attribute
+// node.setAttribute('class', `todo-item ${ischecked}`);
+
+// node.setAttribute(`data-key`, toDo.id);
+
+// // Set the contents of the `li` element created above
+// node.innerHTML = `
+// <input id="${toDo.id}" type="checkbox"/>
+// <label for="${toDo.id}" class="tick js-tick"></label>
+// <span>${toDo.text}</span>
+// <button class="delete-toDo js-delete-toDo">
+// <svg><use href="#delete-icon"></use></svg>
+// </button>
+// `;list.append(node);
+// }
+
+
+function renderTodo(toDo) {
     const list = document.querySelector('.js-todo-list');
+    // select the current todo item in the DOM
+    const item = document.querySelector(`[data-key='${toDo.id}']`);
 
-//ternary operator
-const ischecked = toDo.checked? 'done': '';
-//creat a `li` ans assign it to node
-const node = document.createElement('li');
-//set the attribute
-node.setAttribute('class', `todo-item ${ischecked}`);
+    if(toDo.deleted){
+        item.remove();
+        return
 
-node.setAttribute(`data-key`, toDo.id);
+    }
+  
+    const isChecked = toDo.checked ? 'done': '';
+    const node = document.createElement("li");
+    node.setAttribute('class', `toDo-item ${isChecked}`);
+    node.setAttribute('data-key', toDo.id);
+    node.innerHTML = `
+      <input id="${toDo.id}" type="checkbox"/>
+      <label for="${toDo.id}" class="tick js-tick"></label>
+      <span>${toDo.text}</span>
+      <button class="delete-toDo js-delete-toDo">
+      <svg><use href="#delete-icon"></use></svg>
+      </button>
+    `;
+  
+    // If the item already exists in the DOM
+    if (item) {
+      // replace it
+      list.replaceChild(node, item);
+    } else {
+      // otherwise append it to the end of the list
+      list.append(node);
+    }
+  }
 
-// Set the contents of the `li` element created above
-node.innerHTML = `
-<input id="${toDo.id}" type="checkbox"/>
-<label for="${toDo.id}" class="tick js-tick"></label>
-<span>${toDo.text}</span>
-<button class="delete-toDo js-delete-toDo">
-<svg><use href="#delete-icon"></use></svg>
-</button>
-`;list.append(node);
 
-}
 //selsects the entire list
 const list = document.querySelector('js-todo-list');
 //add the event listener on click
@@ -65,6 +101,11 @@ list.addEventListener('click', event =>{
         toggleDone(itemkey);
 
     }
+    if(event.target.classList.contains('js-delete-toDo')){
+        const itemkey = event.target.parentElement.dataset.key;
+        deleteTodo(itemkey);
+    }
+
 })
 function toggleDone(key){
     const index = item.findIndex(item => item.id === Number(key));
@@ -72,3 +113,23 @@ function toggleDone(key){
     item[index].checked = item[index].checked;
     renderTodo(item[index]);
 }
+
+//delete todo function
+
+function deleteTod(){
+    // find the corresponding todo object in the todoItems array
+    const index = item.findIndex(item => item.id === Number(key));
+    //creat a new object with equivalent properties
+
+    const toDo = {
+        delete: true,
+        ...item[index]
+    };
+    item = item,filter(item => item.id !==Number(key));
+    renderTodo(toDo);
+};
+
+
+
+
+
